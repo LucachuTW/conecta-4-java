@@ -19,7 +19,7 @@ public class EstrategiaAlfaBeta extends Estrategia {
 
     private int alfa_actual;
     private int beta_actual;
-    private double aux;
+    private int aux;
 
     public EstrategiaAlfaBeta() {
     }
@@ -53,7 +53,7 @@ public class EstrategiaAlfaBeta extends Estrategia {
                 nuevoTablero.obtenerGanador();
 
                 // evaluarlo (OJO: cambiar jugador, establecer capa a 1)
-                valorSucesor = AlfaBeta(nuevoTablero,Jugador.alternarJugador(jugador),1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);                
+                valorSucesor = AlfaBeta(nuevoTablero,Jugador.alternarJugador(jugador),1,_evaluador.MINIMO, _evaluador.MAXIMO);                
                 nuevoTablero = null; // Ya no se necesita 
                 
                 // tomar mejor valor            
@@ -95,10 +95,13 @@ public class EstrategiaAlfaBeta extends Estrategia {
         int col,valor,valorSucesor;
         if (esCapaMAX(capa)) {
            alfa_actual=alfa;
-           int aux = _evaluador.MINIMO ;
+           int aux = _evaluador.MINIMO;
               for (col=0; col<Tablero.NCOLUMNAS; col++) {
                 if (movimientosPosibles[col]) { //se puede añadir ficha en columna
                      // crear nuevo tablero y comprobar ganador
+                     if (alfa_actual >= beta_actual) {
+                        return(aux);
+                     } else {
                      nuevoTablero = (Tablero) tablero.clone();
                      nuevoTablero.anadirFicha(col,jugador);
                      nuevoTablero.obtenerGanador();
@@ -108,38 +111,39 @@ public class EstrategiaAlfaBeta extends Estrategia {
                      // tomar mejor valor
                      aux = maximo2(aux,valorSucesor);
                      alfa = maximo2(alfa,aux);
-                     if (beta <= alfa) {
-                          return(aux);
-                     }
+                     
                 }
               }
            
         }
-        else if (esCapaMIN(capa)) {
-              beta_actual=beta;
-              int aux = _evaluador.MAXIMO;
-                for (col=0; col<Tablero.NCOLUMNAS; col++) {
-                    if (movimientosPosibles[col]) { //se puede añadir ficha en columna
-                         // crear nuevo tablero y comprobar ganador
-                         nuevoTablero = (Tablero) tablero.clone();
-                         nuevoTablero.anadirFicha(col,jugador);
-                         nuevoTablero.obtenerGanador();
-                         // evaluarlo (OJO: cambiar jugador, incrementar capa)
-                         valorSucesor = AlfaBeta(nuevoTablero,Jugador.alternarJugador(jugador),capa+1,alfa,beta);
-                         nuevoTablero = null; // Ya no se necesita 
-                         // tomar mejor valor
-                         aux = minimo2(aux,valorSucesor);
-                         beta = minimo2(beta,aux);
-                         if (beta <= alfa) {
-                            return(aux);
-                         }
-                    }
+    }
+        else {
+            beta_actual=beta;
+            int aux = _evaluador.MAXIMO ;
+            for (col=0; col<Tablero.NCOLUMNAS; col++) {
+                if (movimientosPosibles[col]) { //se puede añadir ficha en columna
+                     // crear nuevo tablero y comprobar ganador
+                     if (alfa_actual >= beta_actual) {
+                        return(aux);
+                     } else {
+                     nuevoTablero = (Tablero) tablero.clone();
+                     nuevoTablero.anadirFicha(col,jugador);
+                     nuevoTablero.obtenerGanador();
+                     // evaluarlo (OJO: cambiar jugador, incrementar capa)
+                     valorSucesor = AlfaBeta(nuevoTablero,Jugador.alternarJugador(jugador),capa+1,alfa,beta);
+                     nuevoTablero = null; // Ya no se necesita 
+                     // tomar mejor valor
+                     aux = minimo2(aux,valorSucesor);
+                     beta = minimo2(beta,aux);
+                     
                 }
-
+              }
               
               
-           
+            }   
         }
+        return(aux);
+    }
         
     
    public void establecerCapaMaxima(int capaMaxima) {
