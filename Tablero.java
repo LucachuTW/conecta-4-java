@@ -40,6 +40,15 @@ public class Tablero {
         this._casillas = null;
         this._posicionLibre = null;
     }
+
+    public int[][] getCasillas() {
+        return _casillas;
+    }
+    
+    public int getCasilla(int fila, int columna) {
+        return _casillas[columna][fila];
+    }
+    
     
     public boolean equals(Object obj) {
         int col, fila;

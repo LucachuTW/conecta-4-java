@@ -56,7 +56,7 @@ public class EvaluadorConnectThree extends Evaluador {
             int contenidoCasilla = tablero.obtenerCasilla(fila + i * incrementoFila, columna + i * incrementoColumna);
             if (contenidoCasilla == jugador) {
                 contadorJugador++;
-            } else if (contenidoCasilla != Tablero.VACIO) {
+            } else if (contenidoCasilla != jugador && contenidoCasilla != Tablero.VACIO) {
                 contadorOponente++;
             }
         }
