@@ -22,6 +22,7 @@ public class Conecta4 {
      */
     public static void main(String[] args) {
         cargarArgumentos(args);
+        double[] pesos = {1, 1, 1, 1, 1};
 
         // Crear jugadores y establecer estrategias
 	// Jugador 1: jugador humano
@@ -31,7 +32,7 @@ public class Conecta4 {
        
         // Jugador 2: jugador minimax con evaluador aleatorio y prof. busqueda 4
         Jugador jugador2 = new Jugador(2);
-        jugador2.establecerEstrategia(new EstrategiaAlfaBeta(new EvaluadorPonderadoDinamico(), 4));
+        jugador2.establecerEstrategia(new EstrategiaAlfaBeta(new EvaluadorPonderadoDinamico(pesos), 4));
         DEBUG("Jugador 2: maquina (minimax con eval. ponderado + prof. 4)\n");
        
         // Jugar
