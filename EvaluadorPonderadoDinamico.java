@@ -169,14 +169,7 @@ public class EvaluadorPonderadoDinamico extends Evaluador {
         }
         return puntuacion;
     }
-
-    public int[] pesos_iniciales() {
-
-        int[] pesos = {1, 1, 1, 1, 1};
-
-        return pesos;
-    }
-
+    
     public int valoracion_heuristica_ponderada(Tablero tablero, int jugador, double[] pesos) {
         // Ponderación de los factores de evaluación
         double ponderacionControlEsquinas = pesos[0];
